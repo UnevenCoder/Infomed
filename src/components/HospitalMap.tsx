@@ -1,6 +1,7 @@
 import React from 'react';
 import * as L from 'leaflet';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { usePosition } from 'use-position';
 
 
 type State = {
@@ -11,9 +12,24 @@ type State = {
 
 class HospitalMap extends React.Component {
 
+  getCurrentLoc(): {latitude: number, longitude: number}  {
+    const watch = true;
+    let latitude: number;
+    let longitude: number;
+    let pos = usePosition(watch);
+
+    latitude = pos.latitude as number;
+    longitude = pos.longitude as number;
+
+    return {latitude, longitude};
+    
+  }
+
+  loc = this.getCurrentLoc();
+
   state: State = {
-    lat: 51.505,
-    lng: -0.09,
+    lat: this.loc.latitude,
+    lng: this.loc.longitude,
     zoom: 13,
   }
 
